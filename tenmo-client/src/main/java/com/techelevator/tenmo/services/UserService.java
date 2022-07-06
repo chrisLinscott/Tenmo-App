@@ -7,14 +7,15 @@ import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.List;
 
 public class UserService {
 
     private String baseUrl;
     private RestTemplate restTemplate = new RestTemplate();
-
     public UserService(String baseUrl) {
+
         this.baseUrl = baseUrl;
     }
 
@@ -22,11 +23,7 @@ public class UserService {
 
         String url = baseUrl + "/user";
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.setContentType(MediaType.APPLICATION_JSON);
-        headers.setBearerAuth(currentUser.getToken());
-
-        HttpEntity<BigDecimal> request = new HttpEntity<>(headers);
+        HttpEntity<BigDecimal> request = new HttpEntity<>(makeHeaders(currentUser));
 
         ResponseEntity<User> response = restTemplate.exchange(url, HttpMethod.GET, request, User.class);
 
@@ -34,6 +31,19 @@ public class UserService {
 
         return user.getAccountList();
 
+    }
+    public List<User> getOtherUsers(AuthenticatedUser currentUser){
+        String url = baseUrl + "/other_users";
+        HttpEntity<Void> request=new HttpEntity<>(makeHeaders(currentUser));
+        ResponseEntity<User[]> response=restTemplate.exchange(url,HttpMethod.GET,request,User[].class);
+        return Arrays.asList(response.getBody());
+    }
+
+    private HttpHeaders makeHeaders(AuthenticatedUser currentUser){
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+        headers.setBearerAuth(currentUser.getToken());
+    return headers;
     }
 
 }

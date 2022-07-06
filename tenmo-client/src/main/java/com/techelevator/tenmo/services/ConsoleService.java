@@ -2,6 +2,7 @@ package com.techelevator.tenmo.services;
 
 
 import com.techelevator.tenmo.model.Account;
+import com.techelevator.tenmo.model.User;
 import com.techelevator.tenmo.model.UserCredentials;
 
 import java.math.BigDecimal;
@@ -21,6 +22,22 @@ public class ConsoleService {
             menuSelection = -1;
         }
         return menuSelection;
+    }
+
+    public int promptForUserSelection(List<User> userList) {
+        System.out.println("---------------------");
+        System.out.println("Users");
+        System.out.printf("%-10s%-10s", "ID", "Name");
+        System.out.println();
+        System.out.println("---------------------");
+        for (User user : userList) {
+            System.out.printf("%-10s%-10s", user.getId(), user.getUsername());
+            System.out.println();
+        }
+        System.out.println("------------");
+        System.out.println("Enter ID of user you are sending to (0 to cancel):");
+        String userInput = scanner.nextLine();
+        return Integer.parseInt(userInput);
     }
 
     public void printGreeting() {
@@ -49,10 +66,10 @@ public class ConsoleService {
     }
 
 
-    public void printAccountBalances(List<Account> accounts){
+    public void printAccountBalances(List<Account> accounts) {
 
-        for(Account account : accounts){
-            System.out.println("Your balance for account ID "+account.getId()+" is $"+account.getAccountBalance());
+        for (Account account : accounts) {
+            System.out.println("Your balance for account ID " + account.getId() + " is $" + account.getAccountBalance());
         }
 
     }

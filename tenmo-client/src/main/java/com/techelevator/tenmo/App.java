@@ -6,15 +6,16 @@ import com.techelevator.tenmo.services.AuthenticationService;
 import com.techelevator.tenmo.services.ConsoleService;
 import com.techelevator.tenmo.services.UserService;
 
+import java.math.BigDecimal;
+
 public class App {
 
     private static final String API_BASE_URL = "http://localhost:8080/";
 
     private final ConsoleService consoleService = new ConsoleService();
     private final AuthenticationService authenticationService = new AuthenticationService(API_BASE_URL);
-    private final UserService userService = new UserService(API_BASE_URL);
-
     private AuthenticatedUser currentUser;
+    private final UserService userService = new UserService(API_BASE_URL);
 
     public static void main(String[] args) {
         App app = new App();
@@ -102,7 +103,12 @@ public class App {
 	}
 
 	private void sendBucks() {
-		// TODO Auto-generated method stub
+		int selection=consoleService.promptForUserSelection(userService.getOtherUsers(currentUser));
+
+        if (selection>0){
+           BigDecimal amountToTransfer= consoleService.promptForBigDecimal("Enter amount:");
+
+        }
 		
 	}
 
