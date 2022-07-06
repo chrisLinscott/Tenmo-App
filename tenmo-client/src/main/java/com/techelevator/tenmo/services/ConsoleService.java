@@ -1,9 +1,11 @@
 package com.techelevator.tenmo.services;
 
 
+import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.UserCredentials;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Scanner;
 
 public class ConsoleService {
@@ -45,6 +47,16 @@ public class ConsoleService {
         System.out.println("0: Exit");
         System.out.println();
     }
+
+
+    public void printAccountBalances(List<Account> accounts){
+
+        for(Account account : accounts){
+            System.out.println("Your balance for account ID "+account.getId()+" is $"+account.getAccountBalance());
+        }
+
+    }
+
 
     public UserCredentials promptForCredentials() {
         String username = promptForString("Username: ");
