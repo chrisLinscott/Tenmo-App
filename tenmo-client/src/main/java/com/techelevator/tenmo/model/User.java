@@ -1,9 +1,20 @@
 package com.techelevator.tenmo.model;
 
+import java.util.List;
+
 public class User {
 
     private Long id;
     private String username;
+    private List<Account> accountList;
+
+    public List<Account> getAccountList() {
+        return accountList;
+    }
+
+    public void setAccountList(List<Account> accountList) {
+        this.accountList = accountList;
+    }
 
     public Long getId() {
         return id;
