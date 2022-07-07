@@ -6,11 +6,10 @@ public class Transfer {
 
     private String transferType;
     private String transferStatus;
-    private String userNameFrom;
-    private String userNameTo;
     private int accountIdFrom;
     private int accountIdTo;
-
+    private User userTo;
+    private User userFrom;
 
     private BigDecimal amount;
     private int transferId;
@@ -31,20 +30,20 @@ public class Transfer {
         this.accountIdTo = accountIdTo;
     }
 
-    public String getUserNameFrom() {
-        return userNameFrom;
+    public User getUserTo() {
+        return userTo;
     }
 
-    public void setUserNameFrom(String userNameFrom) {
-        this.userNameFrom = userNameFrom;
+    public void setUserTo(User userTo) {
+        this.userTo = userTo;
     }
 
-    public String getUserNameTo() {
-        return userNameTo;
+    public User getUserFrom() {
+        return userFrom;
     }
 
-    public void setUserNameTo(String userNameTo) {
-        this.userNameTo = userNameTo;
+    public void setUserFrom(User userFrom) {
+        this.userFrom = userFrom;
     }
 
     public int getTransferId() {

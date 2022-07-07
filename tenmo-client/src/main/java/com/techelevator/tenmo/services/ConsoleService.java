@@ -24,7 +24,7 @@ public class ConsoleService {
         return menuSelection;
     }
 
-    public int promptForUserSelection(List<User> userList) {
+    public User promptForUserSelection(List<User> userList) {
         System.out.println("---------------------");
         System.out.println("Users");
         System.out.printf("%-10s%-10s", "ID", "Name");
@@ -35,11 +35,26 @@ public class ConsoleService {
             System.out.println();
         }
         System.out.println("------------");
-        System.out.println("Enter ID of user you are sending to (0 to cancel):");
-        String userInput = scanner.nextLine();
-        return Integer.parseInt(userInput);
-    }
 
+
+        User selectedUser = null;
+
+
+
+        while (selectedUser==null) {
+            int userId = promptForInt("Enter ID of user you are sending to (0 to cancel):");
+            if(userId==0){
+                return null;
+            }
+            for (User user:userList){
+                if(user.getId()==userId){
+                    selectedUser=user;
+                }
+            }
+
+        }
+        return selectedUser;
+    }
     public void printGreeting() {
         System.out.println("*********************");
         System.out.println("* Welcome to TEnmo! *");
@@ -116,5 +131,7 @@ public class ConsoleService {
     public void printErrorMessage() {
         System.out.println("An error occurred. Check the log for details.");
     }
-
+    public void printMessage(String message){
+        System.out.println(message);
+    }
 }

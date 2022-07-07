@@ -16,25 +16,26 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
 import java.security.Principal;
-
-@RestController
 @PreAuthorize("isAuthenticated()")
+@RestController
+
 public class TransferController {
 
     private UserDao userDao;
     private TransferDao transferDao;
 
-    public TransferController(UserDao userDao) {
+    public TransferController(UserDao userDao, TransferDao transferDao) {
         this.userDao = userDao;
+        this.transferDao=transferDao;
     }
 
     @RequestMapping(path = "transfers", method = RequestMethod.POST)
     public void transferMoney(@RequestBody Transfer transfer, Principal principal) {
-        User sender = userDao.findByUsername(transfer.getUserNameFrom());
+        User sender = userDao.findByUsername(principal.getName());
         Account senderAccount = sender.getAccountList().get(0);
         transfer.setAccountIdFrom(senderAccount.getId());
 
-        User receiver = userDao.findByUsername(transfer.getUserNameTo());
+        User receiver = userDao.findByUsername(transfer.getUserTo().getUsername());
         Account receiverAccount = receiver.getAccountList().get(0);
         transfer.setAccountIdTo(receiverAccount.getId());
 
@@ -42,12 +43,12 @@ public class TransferController {
             throw new InvalidRecipientException();
         } else if (senderAccount.getAccountBalance().compareTo(transfer.getAmount()) < 0) {
             throw new InsufficientFundsException();
-        } else if (transfer.getAmount().compareTo(BigDecimal.valueOf(0)) > 0) { //greater than 0
+        } else if (transfer.getAmount().compareTo(BigDecimal.valueOf(0)) < 0) { //greater than 0
             throw new InvalidTransferAmountException();
         } else {
             receiverAccount.setAccountBalance(receiverAccount.getAccountBalance().add(transfer.getAmount()));
             senderAccount.setAccountBalance(senderAccount.getAccountBalance().subtract(transfer.getAmount()));
-            transferDao.executeTransfer(transfer);
+            transferDao.executeTransfer(transfer, receiverAccount, senderAccount);
         }
 
     }

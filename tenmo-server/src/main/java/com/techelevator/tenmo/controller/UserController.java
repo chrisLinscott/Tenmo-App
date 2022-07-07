@@ -24,14 +24,18 @@ public class UserController {
     @RequestMapping(path="other_users",method = RequestMethod.GET)
     public List<User> getOtherUsers(Principal principal){
         List<User> users= userDao.findAll();
+        User currentUser= null;
         for(int i =0;i<users.size();i++){
            User user=users.get(i);
-           if(user.getUsername()==principal.getName()){
-               users.remove(i);
+           if(user.getUsername().equalsIgnoreCase(principal.getName())){
+               currentUser=user;
+
            }else {
                user.setAccountList(null);
            }
+
         }
+        users.remove(currentUser);
                 return users;
     }
 
