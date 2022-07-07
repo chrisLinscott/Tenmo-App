@@ -10,6 +10,7 @@ import com.techelevator.tenmo.services.TransferService;
 import com.techelevator.tenmo.services.UserService;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 public class App {
 
@@ -96,7 +97,8 @@ public class App {
 	}
 
 	private void viewTransferHistory() {
-		// TODO Auto-generated method stub
+		List<Transfer> transferList = transferService.getTransfers(currentUser);
+        consoleService.printTransfers(transferList,currentUser);
 		
 	}
 

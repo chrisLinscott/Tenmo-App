@@ -3,11 +3,20 @@ package com.techelevator.tenmo.model;
 import java.math.BigDecimal;
 
 public class Transfer {
+    private int id;
     private User userTo;
     private User userFrom;
     private BigDecimal amount;
     private String transferType;
     private String transferStatus;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public User getUserTo() {
         return userTo;

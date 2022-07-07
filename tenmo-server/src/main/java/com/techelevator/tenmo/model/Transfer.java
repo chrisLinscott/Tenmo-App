@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 
 public class Transfer {
 
+    private int id;
     private String transferType;
     private String transferStatus;
     private int accountIdFrom;
@@ -13,6 +14,14 @@ public class Transfer {
 
     private BigDecimal amount;
     private int transferId;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public int getAccountIdFrom() {
         return accountIdFrom;

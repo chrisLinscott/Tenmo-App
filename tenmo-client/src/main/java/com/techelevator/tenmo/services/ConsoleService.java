@@ -1,9 +1,7 @@
 package com.techelevator.tenmo.services;
 
 
-import com.techelevator.tenmo.model.Account;
-import com.techelevator.tenmo.model.User;
-import com.techelevator.tenmo.model.UserCredentials;
+import com.techelevator.tenmo.model.*;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -24,6 +22,37 @@ public class ConsoleService {
         return menuSelection;
     }
 
+    public void printTransfers(List<Transfer> transfers, AuthenticatedUser currentUser) {
+
+        String formatString = "%-10s %-20s %-10s";
+        System.out.println("-------------------------------------------");
+        System.out.println("Transfers");
+        System.out.printf(formatString, "ID", "From/To", "Amount");
+        System.out.println();
+        System.out.println("-------------------------------------------");
+
+        for (Transfer transfer : transfers) {
+            if (transfer.getUserFrom().equals(currentUser.getUser())) {
+                System.out.printf(formatString, transfer.getId(), "To: " + transfer.getUserTo().getUsername(),
+                                  "$" + transfer.getAmount()
+                                 );
+            } else {
+                System.out.printf(formatString, transfer.getId(), "From: " + transfer.getUserFrom().getUsername(),
+                                  "$" + transfer.getAmount()
+                                 );
+            }
+            System.out.println();
+
+        }
+
+    }
+
+    public int promptForTransferId() {
+        int selectedTransferId = promptForInt("Please enter the transfer ID to view details (0 to cancel):");
+        return selectedTransferId;
+    }
+
+
     public User promptForUserSelection(List<User> userList) {
         System.out.println("---------------------");
         System.out.println("Users");
@@ -36,25 +65,23 @@ public class ConsoleService {
         }
         System.out.println("------------");
 
-
         User selectedUser = null;
 
-
-
-        while (selectedUser==null) {
+        while (selectedUser == null) {
             int userId = promptForInt("From the list above, enter ID of user you are sending to (0 to cancel):");
-            if(userId==0){
+            if (userId == 0) {
                 return null;
             }
-            for (User user:userList){
-                if(user.getId()==userId){
-                    selectedUser=user;
+            for (User user : userList) {
+                if (user.getId() == userId) {
+                    selectedUser = user;
                 }
             }
 
         }
         return selectedUser;
     }
+
     public void printGreeting() {
         System.out.println("*********************");
         System.out.println("* Welcome to TEnmo! *");
@@ -131,7 +158,9 @@ public class ConsoleService {
     public void printErrorMessage() {
         System.out.println("An error occurred. Check the log for details.");
     }
-    public void printMessage(String message){
+
+    public void printMessage(String message) {
         System.out.println(message);
     }
+
 }
