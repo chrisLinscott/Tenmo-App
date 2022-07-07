@@ -42,7 +42,7 @@ public class ConsoleService {
 
 
         while (selectedUser==null) {
-            int userId = promptForInt("Enter ID of user you are sending to (0 to cancel):");
+            int userId = promptForInt("From the list above, enter ID of user you are sending to (0 to cancel):");
             if(userId==0){
                 return null;
             }

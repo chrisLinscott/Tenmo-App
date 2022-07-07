@@ -43,7 +43,7 @@ public class TransferController {
             throw new InvalidRecipientException();
         } else if (senderAccount.getAccountBalance().compareTo(transfer.getAmount()) < 0) {
             throw new InsufficientFundsException();
-        } else if (transfer.getAmount().compareTo(BigDecimal.valueOf(0)) < 0) { //greater than 0
+        } else if (transfer.getAmount().compareTo(BigDecimal.valueOf(0)) <= 0) { //greater than 0
             throw new InvalidTransferAmountException();
         } else {
             receiverAccount.setAccountBalance(receiverAccount.getAccountBalance().add(transfer.getAmount()));
