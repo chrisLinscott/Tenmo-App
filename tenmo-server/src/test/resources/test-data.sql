@@ -82,3 +82,5 @@ INSERT INTO account(user_id, balance) VALUES (1003, 1000); -- 2003
 INSERT INTO account(user_id, balance) VALUES (1004, 1000); -- 2004
 
 COMMIT;
+
+("testUserOne")

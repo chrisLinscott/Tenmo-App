@@ -40,10 +40,9 @@ public class JdbcTransferDao implements TransferDao {
                 "join transfer_status on transfer.transfer_status_id = transfer_status.transfer_status_id  " +
                 "WHERE transfer.transfer_id = ?  ";
 
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql, id);
 
-        SqlRowSet results = jdbcTemplate.queryForRowSet(sql,id);
-
-        if (results.next()){
+        if (results.next()) {
             transfer = mapRowToTransfer(results);
         }
 
@@ -95,10 +94,20 @@ public class JdbcTransferDao implements TransferDao {
 
     @Override
     public void executeTransfer(Transfer transfer, Account accountFrom, Account accountTo) {
-        String sql = "INSERT INTO transfer(account_from, account_to, amount, transfer_status_id,transfer_type_id) " +
-                "VALUES (?, ?, ?,  2, 2)";
+        String sql = " INSERT INTO transfer(account_from, account_to, amount, transfer_status_id,transfer_type_id) " +
+                "VALUES (?, ?, ?,  " +
+                "(SELECT transfer_status_id FROM transfer_status WHERE transfer_status_desc = ?), " +
+                "(select transfer_type_id from transfer_type WHERE transfer_type.transfer_type_desc = ?));";
 
-        jdbcTemplate.update(sql, accountFrom.getId(), accountTo.getId(), transfer.getAmount());
+
+        jdbcTemplate.update(
+                sql,
+                accountFrom.getId(),
+                accountTo.getId(),
+                transfer.getAmount(),
+                transfer.getTransferStatus(),
+                transfer.getTransferType()
+                           );
 
         updateBalances(accountFrom, accountTo);
     }

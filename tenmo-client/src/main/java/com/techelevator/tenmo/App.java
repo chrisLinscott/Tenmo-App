@@ -133,6 +133,7 @@ public class App {
             transfer.setUserTo(selectedUser);
             transfer.setTransferType("Send");
             transfer.setAmount(amountToTransfer);
+            transfer.setTransferStatus("Approved");
             String message = transferService.doTransfer(transfer, currentUser);
             consoleService.printMessage(message);
         }
