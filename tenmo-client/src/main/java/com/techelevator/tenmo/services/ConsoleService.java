@@ -3,6 +3,7 @@ package com.techelevator.tenmo.services;
 
 import com.techelevator.tenmo.model.*;
 
+import javax.swing.plaf.synth.SynthOptionPaneUI;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Scanner;
@@ -47,7 +48,22 @@ public class ConsoleService {
 
     }
 
+    public void printTransferDetails(Transfer transfer){
+        System.out.println("-------------------------------------------");
+        System.out.println("Transfer Details");
+        System.out.println("-------------------------------------------");
+        System.out.println("Id: "+transfer.getId());
+        System.out.println("From: "+transfer.getUserFrom().getUsername());
+        System.out.println("To: "+transfer.getUserTo().getUsername());
+        System.out.println("Type: "+transfer.getTransferType());
+        System.out.println("Status: "+transfer.getTransferStatus());
+        System.out.println("Amount: $"+transfer.getAmount());
+
+    }
+
     public int promptForTransferId() {
+        System.out.println("-------------------------------------------");
+
         int selectedTransferId = promptForInt("Please enter the transfer ID to view details (0 to cancel):");
         return selectedTransferId;
     }

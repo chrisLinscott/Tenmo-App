@@ -5,15 +5,15 @@ import com.techelevator.tenmo.dao.UserDao;
 import com.techelevator.tenmo.exception.InsufficientFundsException;
 import com.techelevator.tenmo.exception.InvalidRecipientException;
 import com.techelevator.tenmo.exception.InvalidTransferAmountException;
+import com.techelevator.tenmo.exception.TransferNotFoundException;
 import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.Transfer;
 import com.techelevator.tenmo.model.User;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.parameters.P;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.math.BigDecimal;
 import java.security.Principal;
@@ -38,6 +38,17 @@ public class TransferController {
         List<Transfer> transfers = transferDao.getTransferList(principal.getName());
 
         return transfers;
+    }
+
+    @RequestMapping(path = "transfers/{id}", method = RequestMethod.GET)
+    public Transfer getTransferById(@PathVariable int id){
+
+        Transfer transfer = transferDao.getById(id);
+        if (transfer == null){
+            throw new TransferNotFoundException();
+        }
+        return transfer;
+
     }
 
 

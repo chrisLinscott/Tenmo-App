@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface TransferDao {
 
+    Transfer getById(int id);
+
     List<Transfer> getTransferList(String username);
 
     public void executeTransfer(Transfer transfer, Account accountFrom, Account accountTo);

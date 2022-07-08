@@ -18,9 +18,10 @@ public class App {
 
     private final ConsoleService consoleService = new ConsoleService();
     private final AuthenticationService authenticationService = new AuthenticationService(API_BASE_URL);
-    private AuthenticatedUser currentUser;
     private final UserService userService = new UserService(API_BASE_URL);
-    private TransferService transferService= new TransferService(API_BASE_URL);
+    private AuthenticatedUser currentUser;
+    private TransferService transferService = new TransferService(API_BASE_URL);
+
     public static void main(String[] args) {
         App app = new App();
         app.run();
@@ -33,6 +34,7 @@ public class App {
             mainMenu();
         }
     }
+
     private void loginMenu() {
         int menuSelection = -1;
         while (menuSelection != 0 && currentUser == null) {
@@ -91,41 +93,55 @@ public class App {
         }
     }
 
-	private void viewCurrentBalance() {
-		consoleService.printAccountBalances(userService.getAccounts(currentUser));
-		
-	}
+    private void viewCurrentBalance() {
+        consoleService.printAccountBalances(userService.getAccounts(currentUser));
 
-	private void viewTransferHistory() {
-		List<Transfer> transferList = transferService.getTransfers(currentUser);
-        consoleService.printTransfers(transferList,currentUser);
-		
-	}
+    }
 
-	private void viewPendingRequests() {
-		// TODO Auto-generated method stub
-		
-	}
+    private void viewTransferHistory() {
+        List<Transfer> transferList = transferService.getTransfers(currentUser);
+        consoleService.printTransfers(transferList, currentUser);
 
-	private void sendBucks() {
-		User selectedUser=consoleService.promptForUserSelection(userService.getOtherUsers(currentUser));
+        int transferId = consoleService.promptForTransferId();
 
-        if (selectedUser!=null){
-           BigDecimal amountToTransfer= consoleService.promptForBigDecimal("Enter amount:");
-            Transfer transfer=new Transfer();
+        if (transferId == 0) {
+            return;
+        }
+
+        Transfer selectedTransfer = transferService.getTransferById(transferId, currentUser);
+
+        try {
+            consoleService.printTransferDetails(selectedTransfer);
+
+        } catch (NullPointerException e){
+            consoleService.printMessage("You entered a bad transfer id");
+        }
+    }
+
+    private void viewPendingRequests() {
+        // TODO Auto-generated method stub
+
+    }
+
+    private void sendBucks() {
+        User selectedUser = consoleService.promptForUserSelection(userService.getOtherUsers(currentUser));
+
+        if (selectedUser != null) {
+            BigDecimal amountToTransfer = consoleService.promptForBigDecimal("Enter amount:");
+            Transfer transfer = new Transfer();
             transfer.setUserFrom(currentUser.getUser());
             transfer.setUserTo(selectedUser);
             transfer.setTransferType("Send");
             transfer.setAmount(amountToTransfer);
-           String message= transferService.doTransfer(transfer, currentUser);
-           consoleService.printMessage(message);
+            String message = transferService.doTransfer(transfer, currentUser);
+            consoleService.printMessage(message);
         }
 
-	}
+    }
 
-	private void requestBucks() {
-		// TODO Auto-generated method stub
-		
-	}
+    private void requestBucks() {
+        // TODO Auto-generated method stub
+
+    }
 
 }

@@ -2,7 +2,6 @@ package com.techelevator.tenmo.dao;
 
 import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.Transfer;
-import com.techelevator.tenmo.model.User;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
@@ -19,6 +18,36 @@ public class JdbcTransferDao implements TransferDao {
     public JdbcTransferDao(JdbcTemplate jdbcTemplate, UserDao userDao) {
         this.jdbcTemplate = jdbcTemplate;
         this.userDao = userDao;
+    }
+
+    @Override
+    public Transfer getById(int id) {
+        Transfer transfer = null;
+
+        String sql = "select   " +
+                "  transfer.transfer_id,   " +
+                "  transfer.amount,   " +
+                "  user_from.username as user_from,   " +
+                "  user_to.username as user_to,  " +
+                "  transfer_type.transfer_type_desc,  " +
+                "  transfer_status.transfer_status_desc  " +
+                "from transfer  " +
+                "join account as account_from on transfer.account_from = account_from.account_id  " +
+                "join account as account_to on transfer.account_to = account_to.account_id  " +
+                "join tenmo_user as user_from on account_from.user_id = user_from.user_id  " +
+                "join tenmo_user as user_to on account_to.user_id = user_to.user_id  " +
+                "join transfer_type on transfer.transfer_type_id = transfer_type.transfer_type_id  " +
+                "join transfer_status on transfer.transfer_status_id = transfer_status.transfer_status_id  " +
+                "WHERE transfer.transfer_id = ?  ";
+
+
+        SqlRowSet results = jdbcTemplate.queryForRowSet(sql,id);
+
+        if (results.next()){
+            transfer = mapRowToTransfer(results);
+        }
+
+        return transfer;
     }
 
     @Override
