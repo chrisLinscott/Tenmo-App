@@ -21,15 +21,15 @@ public class UserService {
 
     public List<Account> getAccounts(AuthenticatedUser currentUser) {
 
-        String url = baseUrl + "/user";
+        String url = baseUrl + "/user/accounts";
 
-        HttpEntity<BigDecimal> request = new HttpEntity<>(makeHeaders(currentUser));
+        HttpEntity<Void> request = new HttpEntity<>(makeHeaders(currentUser));
 
-        ResponseEntity<User> response = restTemplate.exchange(url, HttpMethod.GET, request, User.class);
+        ResponseEntity<Account[]> response = restTemplate.exchange(url, HttpMethod.GET, request, Account[].class);
 
-        User user = response.getBody();
+        Account[] accounts = response.getBody();
 
-        return user.getAccountList();
+        return Arrays.asList(accounts);
 
     }
     public List<User> getOtherUsers(AuthenticatedUser currentUser){

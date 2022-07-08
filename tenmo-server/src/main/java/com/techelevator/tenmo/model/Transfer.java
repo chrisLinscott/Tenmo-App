@@ -13,7 +13,7 @@ public class Transfer {
     private User userFrom;
 
     private BigDecimal amount;
-    private int transferId;
+
 
     public int getId() {
         return id;
@@ -55,14 +55,6 @@ public class Transfer {
         this.userFrom = userFrom;
     }
 
-    public int getTransferId() {
-        return transferId;
-    }
-
-    public void setTransferId(int transferId) {
-        this.transferId = transferId;
-    }
-
     public String getTransferType() {
         return transferType;
     }
@@ -76,7 +68,7 @@ public class Transfer {
     }
 
     public void setTransferStatus(String transferStatus) {
-        this.transferStatus = transferType;
+        this.transferStatus = transferStatus;
     }
 
 

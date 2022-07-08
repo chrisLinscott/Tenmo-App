@@ -30,7 +30,7 @@ public class JdbcTransferDao implements TransferDao {
                 "  user_from.username as user_from,   " +
                 "  user_to.username as user_to,  " +
                 "  transfer_type.transfer_type_desc,  " +
-                "  transfer_status.transfer_status_desc  " +
+                "  transfer_status.transfer_status_desc AS status  " +
                 "from transfer  " +
                 "join account as account_from on transfer.account_from = account_from.account_id  " +
                 "join account as account_to on transfer.account_to = account_to.account_id  " +
@@ -58,7 +58,7 @@ public class JdbcTransferDao implements TransferDao {
                 "user_from.username as user_from, " +
                 "user_to.username as user_to, " +
                 "transfer_type.transfer_type_desc, " +
-                "transfer_status.transfer_status_desc " +
+                "transfer_status.transfer_status_desc AS status " +
                 "from transfer " +
                 "join account as account_from on transfer.account_from = account_from.account_id " +
                 "join account as account_to on transfer.account_to = account_to.account_id " +
@@ -84,7 +84,7 @@ public class JdbcTransferDao implements TransferDao {
         Transfer transfer = new Transfer();
         transfer.setId(row.getInt("transfer_id"));
         transfer.setTransferType(row.getString("transfer_type_desc"));
-        transfer.setTransferStatus(row.getString("transfer_status_desc"));
+        transfer.setTransferStatus(row.getString("status"));
         transfer.setUserFrom(userDao.findByUsername(row.getString("user_from")));
         transfer.setUserTo(userDao.findByUsername(row.getString("user_to")));
         transfer.setAmount(row.getBigDecimal("amount"));

@@ -1,5 +1,6 @@
 package com.techelevator.tenmo.controller;
 
+import com.techelevator.tenmo.dao.AccountDao;
 import com.techelevator.tenmo.dao.TransferDao;
 import com.techelevator.tenmo.dao.UserDao;
 import com.techelevator.tenmo.exception.InsufficientFundsException;
@@ -26,11 +27,15 @@ public class TransferController {
 
     private UserDao userDao;
     private TransferDao transferDao;
+    private AccountDao accountDao;
 
-    public TransferController(UserDao userDao, TransferDao transferDao) {
+    public TransferController(UserDao userDao, TransferDao transferDao, AccountDao accountDao) {
         this.userDao = userDao;
         this.transferDao = transferDao;
+        this.accountDao = accountDao;
     }
+
+
 
     @RequestMapping(path = "transfers", method = RequestMethod.GET)
     public List<Transfer> getUserTransfers(Principal principal) {
@@ -55,11 +60,11 @@ public class TransferController {
     @RequestMapping(path = "transfers", method = RequestMethod.POST)
     public void transferMoney(@RequestBody Transfer transfer, Principal principal) {
         User sender = userDao.findByUsername(principal.getName());
-        Account senderAccount = sender.getAccountList().get(0);
+        Account senderAccount = accountDao.getAccountsByUserName(principal.getName()).get(0);
         transfer.setAccountIdFrom(senderAccount.getId());
 
         User receiver = userDao.findByUsername(transfer.getUserTo().getUsername());
-        Account receiverAccount = receiver.getAccountList().get(0);
+        Account receiverAccount = accountDao.getAccountsByUserName(receiver.getUsername()).get(0);
         transfer.setAccountIdTo(receiverAccount.getId());
 
         if (receiver == sender) {

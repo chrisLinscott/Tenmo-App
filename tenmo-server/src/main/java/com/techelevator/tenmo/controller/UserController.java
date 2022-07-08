@@ -1,5 +1,6 @@
 package com.techelevator.tenmo.controller;
 
+import com.techelevator.tenmo.dao.AccountDao;
 import com.techelevator.tenmo.dao.UserDao;
 import com.techelevator.tenmo.model.Account;
 import com.techelevator.tenmo.model.User;
@@ -10,15 +11,17 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.math.BigDecimal;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.List;
 @PreAuthorize("isAuthenticated()")
 @RestController
 public class UserController {
 
     private UserDao userDao;
-
-    public UserController(UserDao userDao) {
+    private AccountDao accountDao;
+    public UserController(UserDao userDao, AccountDao accountDao) {
         this.userDao = userDao;
+        this.accountDao=accountDao;
     }
 
     @RequestMapping(path="other_users",method = RequestMethod.GET)
@@ -29,9 +32,6 @@ public class UserController {
            User user=users.get(i);
            if(user.getUsername().equalsIgnoreCase(principal.getName())){
                currentUser=user;
-
-           }else {
-               user.setAccountList(null);
            }
 
         }
@@ -39,11 +39,10 @@ public class UserController {
                 return users;
     }
 
-    @RequestMapping(path="user", method = RequestMethod.GET)
-    public User getCurrentUser(Principal principal){
-        String userName = principal.getName();
-        User user = userDao.findByUsername(userName);
-        return user;
-    }
 
+        @RequestMapping(path="user/accounts", method = RequestMethod.GET)
+    public List<Account> getUserAccounts(Principal principal){
+
+            return accountDao.getAccountsByUserName(principal.getName());
+        }
 }

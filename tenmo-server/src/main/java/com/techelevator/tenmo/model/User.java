@@ -12,7 +12,7 @@ public class User {
    private String password;
    private boolean activated;
    private Set<Authority> authorities = new HashSet<>();
-   private List<Account> accountList;
+
 
    public User() { }
 
@@ -23,13 +23,7 @@ public class User {
       this.activated = true;
    }
 
-   public List<Account> getAccountList() {
-      return accountList;
-   }
 
-   public void setAccountList(List<Account> accountList) {
-      this.accountList = accountList;
-   }
 
    public Long getId() {
       return id;

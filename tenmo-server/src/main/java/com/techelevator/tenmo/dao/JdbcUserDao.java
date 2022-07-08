@@ -79,21 +79,7 @@ public class JdbcUserDao implements UserDao {
 
         return true;
     }
-    private List<Account> getAccountsForUser(User user){
-       List<Account> accountList= new ArrayList<Account>();
-        String sql= "SELECT account_id, balance " +
-        "FROM account "+
-        "WHERE user_id= ?";
 
-        SqlRowSet results= jdbcTemplate.queryForRowSet(sql,user.getId());
-        while (results.next()){
-            Account account= new Account();
-            account.setId(results.getInt("account_id"));
-            account.setAccountBalance(results.getBigDecimal("balance"));
-            accountList.add(account);
-        }
-        return accountList;
-    }
 
 
     private User mapRowToUser(SqlRowSet rs) {
@@ -103,7 +89,6 @@ public class JdbcUserDao implements UserDao {
         user.setPassword(rs.getString("password_hash"));
         user.setActivated(true);
         user.setAuthorities("USER");
-        user.setAccountList(getAccountsForUser(user));
         return user;
     }
 }

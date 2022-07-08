@@ -107,15 +107,15 @@ public class App {
         if (transferId == 0) {
             return;
         }
-
-        Transfer selectedTransfer = transferService.getTransferById(transferId, currentUser);
-
-        try {
-            consoleService.printTransferDetails(selectedTransfer);
-
-        } catch (NullPointerException e){
-            consoleService.printMessage("You entered a bad transfer id");
+        for (Transfer transfer : transferList) {
+            if (transfer.getId() == transferId) {
+                Transfer selectedTransfer = transfer;
+                consoleService.printTransferDetails(selectedTransfer);
+                return;
+            }
         }
+        consoleService.printMessage("You entered a bad transfer id");
+
     }
 
     private void viewPendingRequests() {
